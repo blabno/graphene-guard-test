@@ -9,6 +9,7 @@
 
     <extension qualifier="graphene">
         <property name="waitAjaxInterval">10</property>
+        <property name="waitGuardInterval">4</property>
     </extension>
     <extension qualifier="webdriver">
         <property name="browserCapabilities">firefox</property>

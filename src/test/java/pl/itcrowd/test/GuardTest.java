@@ -23,6 +23,7 @@ import java.io.File;
 import java.net.URL;
 
 import static org.jboss.arquillian.graphene.Graphene.guardAjax;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 @RunWith(Arquillian.class)
@@ -47,6 +48,9 @@ public class GuardTest {
 
     @FindBy(id = "f:inputB")
     private WebElement inputB;
+
+    @FindBy(id = "f:counter")
+    private WebElement counter;
 
     @Deployment(testable = false)
     public static WebArchive createDeployment()
@@ -89,14 +93,31 @@ public class GuardTest {
     public void onChange()
     {
         browser.get(deploymentUrl + "noPoll.jsf");
-
+        assertEquals("Counter: 0",counter.getText());
         try {
-            guardAjax(inputA).sendKeys("Any");
+            guardAjax(inputA).sendKeys("Anything you want you've got it"+"Anything you want you've got it"+"Anything you want you've got it"+"Anything you want you've got it"+"Anything you want you've got it");
+            assertEquals("Counter: 1",counter.getText());
         } catch (RequestGuardException e) {
             fail("Unexpected RequestGuardException");
         }
 
-        guardAjax(inputB).sendKeys("Anything");
+        inputB.sendKeys("Anything");
+        guardAjax(counter).click();
+        assertEquals("Counter: 1",counter.getText());
+    }
+    @Test
+    public void doubleKeyup()
+    {
+        browser.get(deploymentUrl + "doubleKeyup.jsf");
+        assertEquals("Counter: 0",counter.getText());
+        try {
+            guardAjax(inputA).sendKeys("Anything you want you've got it");
+            assertEquals("Counter: 2",counter.getText());
+        } catch (RequestGuardException e) {
+            fail("Unexpected RequestGuardException");
+        }
+        guardAjax(inputA).sendKeys("Taco");
+        assertEquals("Counter: 4",counter.getText());
     }
 
     /**

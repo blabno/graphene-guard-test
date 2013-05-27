@@ -1,12 +1,12 @@
 package pl.itcrowd.richfaces;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import java.io.Serializable;
 import java.util.Random;
 
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class PanelBean implements Serializable {
 
     private Random generator = new Random();
@@ -39,6 +39,18 @@ public class PanelBean implements Serializable {
     {
         this.text = text;
     }
+
+    public void incrementCounter()
+    {
+        counter++;
+    }
+
+    public int getCounter()
+    {
+        return counter;
+    }
+
+    private int counter;
 
     public void changeText() throws InterruptedException
     {
